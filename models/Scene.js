@@ -18,9 +18,9 @@ class Displayer {
         this.near = near;
         this.far = far;
         this.camera = new THREE.PerspectiveCamera(this.fov, this.aspect, this.near, this.far);
-        this.camera.position.z= 15;
-        this.camera.position.x= 15;
-        this.camera.position.y= 8;
+        this.camera.position.z = 15;
+        this.camera.position.x = 15;
+        this.camera.position.y = 8;
 
         // Scene setup
         this.scene = new THREE.Scene();
@@ -39,7 +39,7 @@ class Displayer {
         // Adding gltfModel
         this.gltfLoader();
 
-        this.animate();
+        this.animate(canvas);
 
     }
 
@@ -75,10 +75,11 @@ class Displayer {
         this.renderer.render(this.scene, this.camera)
     }
 
-    animate() {
+    animate(canvas) {
         window.requestAnimationFrame(this.animate.bind(this));
         this.render();
         this.controls.update();
+        this.resizeRendererToDisplaySize(canvas);
     }
 
     gltfLoader() {
@@ -87,6 +88,17 @@ class Displayer {
             const root = gltf.scene;
             this.scene.add(root);
         })
+    }
+
+    resizeRendererToDisplaySize(canvas) {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+            canvas.style.width =  `${width}px`;
+            canvas.style.height = `${height}px`;
+            this.renderer.setSize(width, height, false);
+        }
     }
 }
 
