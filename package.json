@@ -1,0 +1,23 @@
+{
+  "name": "3d-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "npx vite",
+    "config": "ngrok config add-authtoken %ngrok_token%",
+    "httpsrvr": "ngrok http http://localhost:5173"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ngrok": "^5.0.0-beta.2",
+    "three": "^0.165.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "vite": "^5.3.1"
+  }
+}
