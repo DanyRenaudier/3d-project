@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npx vite",
+    "start": "npx vite --port 3000",
     "config": "ngrok config add-authtoken %ngrok_token%",
-    "httpsrvr": "ngrok http http://localhost:5173"
+    "httpsrvr": "ngrok http http://localhost:3000"
   },
   "keywords": [],
   "author": "",
