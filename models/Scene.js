@@ -3,10 +3,10 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
+
 class Displayer {
 
     constructor(url, fov = 45, aspect = window.innerWidth / window.innerHeight, near, far) {
-
         // HTML setup
         this.canvasCreator();
 
@@ -38,7 +38,7 @@ class Displayer {
         this.lights();
 
         // Adding gltfModel
-        this.gltfLoader()
+        // this.gltfLoader()
 
         this.animate();
     }
@@ -83,17 +83,20 @@ class Displayer {
     }
 
     gltfLoader() {
-        const loader = new GLTFLoader();
-        try {
-            loader.setDRACOLoader(this.dLoader());
-            loader.load(this.url, (gltf) => {
-                const root = gltf.scene;
-                this.scene.add(root);
-                this.loadModel();
-            })
-        } catch (error) {
-            console.log(error);
-        }
+        return new Promise((resolve, reject) => {
+            const loader = new GLTFLoader();
+            try {
+                loader.setDRACOLoader(this.dLoader());
+                loader.load(this.url, (gltf) => {
+                    const root = gltf.scene;
+                    this.scene.add(root);
+                    this.awaitModel();
+                    resolve('Modelo Cargado')
+                })
+            } catch (error) {
+                reject(error);
+            }
+        })
     }
 
     resizeRendererToDisplaySize() {
@@ -114,11 +117,14 @@ class Displayer {
         return loader;
     }
 
-    loadModel() {
+    awaitModel() {
         let load = document.querySelector('.loader-page');
         load.style.visibility = "hidden";
         load.style.opacity = '0';
+        window.modelLoaded = true
     }
+
+
 }
 
 export { Displayer };
