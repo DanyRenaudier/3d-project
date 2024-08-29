@@ -5,19 +5,17 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npx vite --port 3000 --host",
-    "config": "ngrok config add-authtoken %ngrok_token%",
-    "httpsrvr": "ngrok http http://localhost:3000"
+    "start": "npx vite --port 3000 --host"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ngrok": "^5.0.0-beta.2",
     "three": "^0.165.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vite-plugin-mkcert": "^1.17.6"
   }
 }
