@@ -9,9 +9,6 @@ class XrConfig {
 
     ArSession() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        this.addButton();
-        this.xrSessionCheck();
-
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
         this.light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3);
@@ -24,6 +21,9 @@ class XrConfig {
         document.body.appendChild(this.renderer.domElement);
         
         this.sceneAdd([this.light, this.camera]);
+        
+        this.addButton();
+        this.xrSessionCheck();
     }
 
     sceneAdd(add){
