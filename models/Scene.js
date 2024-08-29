@@ -72,11 +72,13 @@ class Displayer {
         this.renderer.render(this.scene, this.camera)
     }
 
-    animate() {
+    async animate() {
         window.requestAnimationFrame(this.animate.bind(this));
         this.render();
         this.controls.update();
         this.resizeRendererToDisplaySize();
+        let button = document.getElementById('ARButton')
+            await navigator.xr.isSessionSupported('immersive-ar') ? button.innerHTML = 'Augmented Reality' : button.innerHTML = "AR NOT Supported"
     }
 
     gltfLoader() {

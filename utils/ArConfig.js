@@ -45,4 +45,6 @@ class XrConfig {
     }
 }
 
-export { XrConfig }
+export { 
+    XrConfig
+ }
