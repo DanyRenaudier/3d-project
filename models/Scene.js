@@ -37,9 +37,6 @@ class Displayer {
 
         this.lights();
 
-        // Adding gltfModel
-        // this.gltfLoader()
-
         this.animate();
     }
 
