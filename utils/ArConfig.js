@@ -3,13 +3,13 @@ import { ARButton } from 'three/addons/webxr/ARButton.js';
 
 class XrConfig {
     constructor() {
+        this.ArSession()
+    }
+    
+    ArSession() {
         this.hitTestSource = null;
         this.hitTestSourceRequested = false;
-        this.ArSession()
 
-    }
-
-    ArSession() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
@@ -91,11 +91,11 @@ class XrConfig {
 
                 });
 
-                session.addEventListener('end', function () {
-
+                session.addEventListener('end', ()=>{
                     this.hitTestSourceRequested = false;
                     this.hitTestSource = null;
-
+                    this.scene.clear()
+                    this.sceneAdd([this.light, this.camera, this.controller, this.reticle]);
                 });
 
                 this.hitTestSourceRequested = true;
