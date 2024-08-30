@@ -1,3 +1,4 @@
 import {XrConfig} from './utils/ArConfig'
 
-let xrSession = new XrConfig();
+const url = './resources/bedroom.glb';
+let xrSession = new XrConfig(url);

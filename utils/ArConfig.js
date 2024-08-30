@@ -1,12 +1,16 @@
 import * as THREE from 'three'
 import { ARButton } from 'three/addons/webxr/ARButton.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 
 class XrConfig {
-    constructor() {
-        this.ArSession()
+    constructor(url) {
+        this.ArSession(url);
     }
-    
-    ArSession() {
+
+    ArSession(url) {
+        this.url = url
+        this.loader = new GLTFLoader();
         this.hitTestSource = null;
         this.hitTestSourceRequested = false;
 
@@ -30,7 +34,7 @@ class XrConfig {
             new THREE.RingGeometry(0.15, 0.2, 32).rotateX(- Math.PI / 2),
             new THREE.MeshBasicMaterial()
         );
-        this.controller.addEventListener('select', this.onSelect.bind(this, this.geometry));
+        this.controller.addEventListener('select', this.onSelect.bind(this));
         this.reticle.matrixAutoUpdate = false;
         this.reticle.visible = false;
 
@@ -64,15 +68,25 @@ class XrConfig {
     onSelect() {
 
         if (this.reticle.visible) {
-
-            this.material = new THREE.MeshPhongMaterial({ color: 0xffffff * Math.random() });
-            const mesh = new THREE.Mesh(this.geometry, this.material);
-            this.reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
-            mesh.scale.y = Math.random() * 2 + 1;
-            this.scene.add(mesh);
+            try {
+                this.loader.setDRACOLoader(this.dLoader(this));
+                this.loader.load(this.url, (gltf) => {
+                    const root = gltf.scene;
+                    this.scene.add(root);
+                })
+            } catch (error) {
+                console.error(error)
+            }
 
         }
 
+    }
+
+    dLoader() {
+        const loader = new DRACOLoader();
+        loader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/')
+        loader.setDecoderConfig({ type: 'js' })
+        return loader;
     }
 
     animate(timestamp, frame) {
@@ -82,16 +96,16 @@ class XrConfig {
             const referenceSpace = this.renderer.xr.getReferenceSpace();
             const session = this.renderer.xr.getSession();
             if (this.hitTestSourceRequested === false) {
-                session.requestReferenceSpace('viewer').then(referenceSpace=> {
+                session.requestReferenceSpace('viewer').then(referenceSpace => {
 
-                    session.requestHitTestSource({ space: referenceSpace }).then(source=>{
+                    session.requestHitTestSource({ space: referenceSpace }).then(source => {
                         this.hitTestSource = source;
 
                     });
 
                 });
 
-                session.addEventListener('end', ()=>{
+                session.addEventListener('end', () => {
                     this.hitTestSourceRequested = false;
                     this.hitTestSource = null;
                     this.scene.clear()
