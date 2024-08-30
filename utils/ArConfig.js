@@ -75,7 +75,7 @@ class XrConfig {
 
     }
 
-    animate(frame) {
+    animate(timestamp, frame) {
 
         if (frame) {
 
