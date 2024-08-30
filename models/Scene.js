@@ -78,7 +78,7 @@ class Displayer {
         this.controls.update();
         this.resizeRendererToDisplaySize();
         let button = document.getElementById('ARButton')
-            await navigator.xr.isSessionSupported('immersive-ar') ? button.innerHTML = 'Augmented Reality' : button.innerHTML = "AR NOT Supported"
+        await navigator.xr.isSessionSupported('immersive-ar') ? button.innerHTML = 'Augmented Reality' : button.innerHTML = "AR NOT Supported"
     }
 
     gltfLoader() {
