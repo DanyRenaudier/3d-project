@@ -11,8 +11,8 @@ class XrConfig {
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+        
         this.light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3);
-
         this.light.position.set(0.5, 1, 0.25);
 
         this.renderer.setPixelRatio(window.devicePixelRatio);
