@@ -11,8 +11,6 @@ class XrConfig {
     ArSession(url) {
         this.url = url
         this.loader = new GLTFLoader();
-        //flag to display just once the model
-        this.displayed = false;
         this.hitTestSource = null;
         this.hitTestSourceRequested = false;
 
@@ -34,14 +32,15 @@ class XrConfig {
             new THREE.RingGeometry(0.15, 0.2, 32).rotateX(- Math.PI / 2),
             new THREE.MeshBasicMaterial()
         );
-        this.controller.addEventListener('select', this.onSelect.bind(this));
+        this.onSelectBound = this.onSelect.bind(this)
+        this.controller.addEventListener('select',this.onSelectBound);
         this.reticle.matrixAutoUpdate = false;
         this.reticle.visible = false;
-
-        this.sceneAdd([this.light, this.camera, this.controller, this.reticle]);
-
+        this.scenegraph = [this.light, this.camera, this.controller, this.reticle];
+        this.sceneAdd(this.scenegraph);
+        
         this.addButton();
-        this.xrSessionCheck();
+        this.xrSessionCheck();        
         document.body.appendChild(this.renderer.domElement);
 
         window.addEventListener('resize', this.onWindowResize.bind(this));
@@ -60,8 +59,7 @@ class XrConfig {
         if (!('xr' in window.navigator)) {
             return false
         } else {
-            let button = document.getElementById('ARButton')
-            await navigator.xr.isSessionSupported('immersive-ar') ? button.innerHTML = 'Augmented Reality' : button.innerHTML = "AR NOT Supported"
+            await navigator.xr.isSessionSupported('immersive-ar') ? this.innerHTML = 'Augmented Reality' : this.innerHTML = "AR NOT Supported"
         }
     }
 
@@ -73,7 +71,11 @@ class XrConfig {
                 this.loader.load(this.url, (gltf) => {
                     const root = gltf.scene;
                     this.reticle.matrix.decompose(root.position,root.quaternion,root.scale);
+                    this.scene.clear();
+                    this.scenegraph.pop();
+                    this.sceneAdd(this.scenegraph);
                     this.scene.add(root);
+                    this.controller.removeEventListener('select', this.onSelectBound);
                 })
             } catch (error) {
                 console.error(error)
@@ -110,7 +112,10 @@ class XrConfig {
                     this.hitTestSourceRequested = false;
                     this.hitTestSource = null;
                     this.scene.clear()
-                    this.sceneAdd([this.light, this.camera, this.controller, this.reticle]);
+                    this.scenegraph.push(this.reticle);
+                    this.sceneAdd(this.scenegraph);
+                    this.controller.addEventListener('select', this.onSelectBound)
+
                 });
 
                 this.hitTestSourceRequested = true;
