@@ -11,6 +11,8 @@ class XrConfig {
     ArSession(url) {
         this.url = url
         this.loader = new GLTFLoader();
+        //flag to display just once the model
+        this.displayed = false;
         this.hitTestSource = null;
         this.hitTestSourceRequested = false;
 
@@ -25,8 +27,6 @@ class XrConfig {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.setAnimationLoop(this.animate.bind(this));
         this.renderer.xr.enabled = true;
-
-        this.geometry = new THREE.CylinderGeometry(0.1, 0.1, 0.2, 32).translate(0, 0.1, 0);
 
         this.controller = this.renderer.xr.getController(0);
 
@@ -72,6 +72,7 @@ class XrConfig {
                 this.loader.setDRACOLoader(this.dLoader(this));
                 this.loader.load(this.url, (gltf) => {
                     const root = gltf.scene;
+                    this.reticle.matrix.decompose(root.position,root.quaternion,root.scale);
                     this.scene.add(root);
                 })
             } catch (error) {
