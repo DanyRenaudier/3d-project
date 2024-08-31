@@ -19,9 +19,9 @@ class Displayer {
         this.near = near;
         this.far = far;
         this.camera = new THREE.PerspectiveCamera(this.fov, this.aspect, this.near, this.far);
-        this.camera.position.z = 15;
-        this.camera.position.x = 15;
-        this.camera.position.y = 8;
+        this.camera.position.z = 27;
+        this.camera.position.x = 27;
+        this.camera.position.y = 15;
 
         // Scene setup
         this.scene = new THREE.Scene();
