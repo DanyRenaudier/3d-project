@@ -1,6 +1,6 @@
 import { Displayer } from "./models/Scene";
 
-const url = './resources/web-bedroom.glb'
+const url = './resources/scene.glb'
 const displayer = new Displayer(url);
 displayer.gltfLoader();
 

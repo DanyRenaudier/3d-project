@@ -18,8 +18,8 @@ class XrConfig {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
 
-        this.light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 3);
-        this.light.position.set(0.5, 1, 0.25);
+        this.light =  new THREE.DirectionalLight( 0xffffff, 4);
+        this.light.position.set(0.5, 1, 1);
 
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -70,7 +70,7 @@ class XrConfig {
                 this.loader.setDRACOLoader(this.dLoader(this));
                 this.loader.load(this.url, (gltf) => {
                     const root = gltf.scene;
-                    this.reticle.matrix.decompose(root.position,root.quaternion,root.scale);
+                    this.reticle.matrix.decompose(root.position,root.quaternion,{x:4,y:4,z:4});
                     this.scene.clear();
                     this.scenegraph.pop();
                     this.sceneAdd(this.scenegraph);

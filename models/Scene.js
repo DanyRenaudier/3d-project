@@ -19,13 +19,14 @@ class Displayer {
         this.near = near;
         this.far = far;
         this.camera = new THREE.PerspectiveCamera(this.fov, this.aspect, this.near, this.far);
-        this.camera.position.z = 27;
-        this.camera.position.x = 27;
-        this.camera.position.y = 15;
-
+        this.camera.position.x = 1.055;
+        this.camera.position.y = 0.458;
+        this.camera.position.z = 0.808;
+        
         // Scene setup
         this.scene = new THREE.Scene();
         this.scene.background = new THREE.Color('#512c10');
+        this.camera.lookAt(this.scene.position);
 
         // Renderer setup
         const canvas = document.getElementById('c');
@@ -55,11 +56,11 @@ class Displayer {
         this.scene.add(this.ambientLight);
 
         // directional light - parallel sun rays
-        this.directionalLight = new THREE.DirectionalLight(0xffffff, 15);
+        this.directionalLight = new THREE.DirectionalLight(0xffffff, 4);
 
         this.directionalLight.castShadow = true;
 
-        this.directionalLight.position.set(0, 32, 20);
+        this.directionalLight.position.set(1.286, 4.014, 1.161);
         this.scene.add(this.directionalLight);
     }
 
