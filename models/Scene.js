@@ -74,7 +74,7 @@ class Displayer {
     }
 
     async animate() {
-        window.requestAnimationFrame(this.animate.bind(this));
+        this.renderer.setAnimationLoop(this.animate.bind(this));
         this.render();
         this.controls.update();
         this.resizeRendererToDisplaySize();
